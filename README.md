@@ -27,7 +27,7 @@ This is a Django-based web application that provides a real-time auction system 
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/muhammad-hamza-liaqat/python-images-utils.git
+git clone https://https://github.com/obaidullah72/auctions-project.git
 cd server
 ```
 
