@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ auction.title }}</title>
+</head>
+<body>
+    <h1>{{ auction.title }}</h1>
+    <p>{{ auction.description }}</p>
+    <p>Starting Bid: ${{ auction.starting_bid }}</p>
+    <p>Current Bid: <span id="current-bid">${{ auction.current_bid|default:auction.starting_bid }}</span></p>
+    <p>Ends: {{ auction.end_time }}</p>
+
+    <input type="number" id="bid-amount" step="0.01">
+    <button onclick="placeBid()">Place Bid</button>
+
+    <script>
+        const auctionId = {{ auction.id }};
+        const socket = new WebSocket(
+            'ws://' + window.location.host + '/ws/auction/' + auctionId + '/'
+        );
+
+        socket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            document.getElementById('current-bid').innerText = '$' + data.bid;
+        };
+
+        function placeBid() {
+            const bid = document.getElementById('bid-amount').value;
+            socket.send(JSON.stringify({
+                'bid': bid
+            }));
+            document.getElementById('bid-amount').value = '';
+        }
+    </script>
+</body>
+</html>
